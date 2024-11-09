@@ -45,27 +45,27 @@ const CallList = ({ type }: { type: 'ended' | 'upcoming' | 'recordings' }) => {
 
   useEffect(() => {
     const fetchRecordings = async () => {
-        try{
-      const callData = await Promise.all(
-        callRecordings?.map((meeting) => meeting.queryRecordings()) ?? [],
-      );
-
-      const recordings = callData
-        .filter((call) => call.recordings.length > 0)
-        .flatMap((call) => call.recordings);
-
-      setRecordings(recordings);}
-      catch(error){
+      try {
+        const callData = await Promise.all(
+          callRecordings?.map((meeting) => meeting.queryRecordings()) ?? []
+        );
+  
+        const recordings = callData
+          .filter((call) => call.recordings.length > 0)
+          .flatMap((call) => call.recordings);
+  
+        setRecordings(recordings);
+      } catch (error) {
         toast({
           title: "Try Again Later",
         });
       }
     };
-
+  
     if (type === 'recordings') {
       fetchRecordings();
     }
-  }, [type, callRecordings]);
+  }, [type, callRecordings, toast]);
 
   if (isLoading) return <Loader />;
 
