@@ -1,8 +1,5 @@
 'use client';
 
-import dotenv from 'dotenv';
-dotenv.config({ path: '../../.env' });
-
 import { ReactNode, useEffect, useState } from 'react';
 import { StreamVideoClient, StreamVideo } from '@stream-io/video-react-sdk';
 import { useUser } from '@clerk/nextjs';

@@ -5,7 +5,7 @@ import { Button } from './ui/button'
 
 const MeetingSetup = ({setIsSetupComplete} : {setIsSetupComplete : (value : boolean) => void}) => {
 
-    const [isMicCamToggledOn, setIsMicCamToggledOn] = useState(false)
+    const [isMicCamToggledOff, setIsMicCamToggledOff] = useState(false)
     
     const call = useCall();
 
@@ -13,19 +13,15 @@ const MeetingSetup = ({setIsSetupComplete} : {setIsSetupComplete : (value : bool
         throw new Error('useCall must be used within Stream Component')
     }
    useEffect (() =>{
-    if(isMicCamToggledOn){
+    if(isMicCamToggledOff){
         call?.camera.disable();
         call?.microphone.disable();
-
-        
     }
-
     else{
         call?.camera.enable();
         call?.microphone.enable();
     }
-
-   }, [isMicCamToggledOn, call?.camera, call?.microphone])
+   }, [isMicCamToggledOff, call?.camera, call?.microphone])
   return (
     <div className='flex h-screen w-full flex-col justify-center items-center gap-3 text-white'>
         <h1 className='text-2xl font-bold'>Setup</h1>
@@ -35,8 +31,8 @@ const MeetingSetup = ({setIsSetupComplete} : {setIsSetupComplete : (value : bool
 
                 <input
                 type='checkbox'
-                checked={isMicCamToggledOn}
-                onChange={(e) => setIsMicCamToggledOn(e.target.checked)}
+                checked={isMicCamToggledOff}
+                onChange={(e) => setIsMicCamToggledOff(e.target.checked)}
                 />
                 <span>Join with Mic and Camera Off</span>
             </label>
