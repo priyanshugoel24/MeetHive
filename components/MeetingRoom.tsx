@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { CallControls, CallingState, CallStatsButton, PaginatedGridLayout, SpeakerLayout, useCallStateHooks } from "@stream-io/video-react-sdk";
+import { CallStatsButton, PaginatedGridLayout, SpeakerLayout, useCallStateHooks, CallingState } from "@stream-io/video-react-sdk";
 import React, { useState } from "react";
 import {
     DropdownMenu,
@@ -17,6 +17,8 @@ import ScreenShareButton from "./ScreenShareButton";
 import MeetingChat from "./MeetingChat";
 import RecordingButton from "./RecordingButton";
 import ParticipantManagement from "./ParticipantManagement";
+import InviteParticipants from "./InviteParticipants";
+import CustomCallControls from "./CustomCallControls";
   
 
 type CallLayouttype = "speaker-left" | "speaker-right" | "grid";
@@ -52,38 +54,45 @@ const MeetingRoom = () => {
         </div>
       </div>
 
-      <div className="fixed bottom-0 flex w-full justify-center items-center gap-5 flex-wrap">
-        <CallControls onLeave={() => router.push('/')}/>
+      <div className="fixed bottom-0 flex w-full justify-center items-center gap-5 flex-wrap bg-dark-2 py-4">
+        {/* Left section - Layout Controls */}
+        <div className="flex items-center gap-3">
+          <DropdownMenu>
+              <div className="flex items-center">
+                  <DropdownMenuTrigger className="cursor-pointer rounded-2xl bg-[#19232d] px-4 py-2 hover:bg-[#4c535b]">
+                      <LayoutList size={20} className="text-white " />
+                  </DropdownMenuTrigger>
+              </div>
+              
+              <DropdownMenuContent className="border-dark-1 bg-dark-1 text-white">
+                  {["Speaker-Left", "Speaker-Right", "Grid"].map((item, index) => (
+                      <div key={index}>
+                          <DropdownMenuItem
+                              className="cursor-pointer"
+                              onClick={() =>{ setlayout(item.toLowerCase() as CallLayouttype)}}
+                              >{item}
+                          </DropdownMenuItem>
+                          <DropdownMenuSeparator className="border-dark-1" />
+                      </div>
+                  ))}
+              </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
 
-        <DropdownMenu>
-            <div className="flex items-center">
-                <DropdownMenuTrigger className="cursor-pointer rounded-2xl bg-[#19232d] px-4 py-2 hover:bg-[#4c535b]">
-                    <LayoutList size={20} className="text-white " />
-                    
-                </DropdownMenuTrigger>
-            </div>
-            
-            <DropdownMenuContent className="border-dark-1 bg-dark-1 text-white">
-                {["Speaker-Left", "Speaker-Right", "Grid"].map((item, index) => (
-                    <div key={index}>
-                        <DropdownMenuItem
-                            className="cursor-pointer"
-                            onClick={() =>{ setlayout(item.toLowerCase() as CallLayouttype)}}
-                            >{item}
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator className="border-dark-1" />
-                    </div>
-                ))}
-                
-                
-            </DropdownMenuContent>
-        </DropdownMenu>
+        {/* Center section - Main Call Controls */}
+        <div className="flex items-center gap-2">
+          <CustomCallControls />
+        </div>
 
-        <ScreenShareButton />
-        <RecordingButton />
-        <CallStatsButton />
-        <ParticipantManagement />
-        {!isPersonalRoom && <EndCallButton />}
+        {/* Right section - Additional Controls */}
+        <div className="flex items-center gap-3">
+          <ScreenShareButton />
+          <RecordingButton />
+          <InviteParticipants />
+          <ParticipantManagement />
+          <CallStatsButton />
+          {!isPersonalRoom && <EndCallButton />}
+        </div>
 
       </div>
       
