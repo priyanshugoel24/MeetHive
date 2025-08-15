@@ -5,6 +5,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "@/components/ui/toaster"
 import "@stream-io/video-react-sdk/dist/css/styles.css";
 import 'react-datepicker/dist/react-datepicker.css';
+import ErrorBoundary from "@/components/ErrorBoundary";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -46,8 +47,10 @@ export default function RootLayout({
       }}><body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-dark-2`}
       >
-        {children}
-        <Toaster />
+        <ErrorBoundary>
+          {children}
+          <Toaster />
+        </ErrorBoundary>
       </body></ClerkProvider>
       
     </html>
